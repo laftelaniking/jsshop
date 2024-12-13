@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="kr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="./main.css" rel="stylesheet">
+  </head>
+  <body>
+
+
+    <!-- <div class="black-bg ">
+      <div class="white-bg ">
+        <h4>로그인하세요</h4>
+          <form action="success.html">
+              <div class="my-3">
+                  <input type="text" class="form-control" id="uid">
+              </div>
+              <div class="my-3">
+                  <input type="password" class="form-control" id="pw">
+              </div>
+              <button type="submit" class="btn btn-primary" id="send">전송</button>
+              <button type="button" class="btn btn-danger" id="close">닫기</button>
+          </form> 
+      </div>
+    </div>  -->
+
+    
+
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <span class="navbar-brand">jsshop</span>
+
+        <span class="badge bg-dark" id="darkmode" style="cursor: default;"> Dark 🔄</span>
+
+        <button id="open" class="navbar-toggler" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      <ul class="list-group " id="ul">
+        <li class="list-group-item">An item</li>
+        <li class="list-group-item">A second item</li>
+        <li class="list-group-item">A third item</li>
+        <li class="list-group-item">A fourth item</li>
+        <li class="list-group-item">And a fifth one</li>
+      </ul>
+    <div id="pagerate" style="background-color: red; width: 0%; height: 3px;"></div>
+    </nav> 
+    
+    <div style="height: 100px;"></div>
+
+    
+    <div class="main-bg">
+      <h4>Shirts on Sale</h4>
+      <button id="login" class="btn btn-danger">로그인</button>
+    </div>
+
+    <!-- 이거 궁금하면 댓글로 물어보셈 찾아보시던가 -->
+    <div class="alert alert-danger">
+      5초 이내 구매시 사은품 증정
+    </div>
+    
+    <!-- Here is 캐러셀 -->
+    <div class="slide-container">
+      <div class="slide-box">
+        <img src="car1.png">
+      </div>
+      <div class="slide-box">
+        <img src="car2.png">
+      </div>
+      <div class="slide-box">
+        <img src="car3.png">
+      </div>
+    </div>
+
+    <!-- 캐러셀 버튼 -->
+    <button id="pre">pre</button>
+    <button class="slide-1">1</button>
+    <button class="slide-2">2</button>
+    <button class="slide-3">3</button>
+    <button id="next">next</button>
+
+    <p></p>
+    <div class="lorem" style="width: 200px; height: 100px; overflow-y: scroll">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+      Quae voluptas voluptatum minus praesentium fugit debitis at, 
+      laborum ipsa itaque placeat sit, excepturi eius. Nostrum perspiciatis, 
+      eligendi quae consectetur praesentium exercitationem.
+    </div> 
+ 
+    <div style="height: 1000px;"></div>
+
+
+
+
+
+
+
+    <script>
+      //약관 다 읽었는지 확인하기
+      var 약관확인 = 0;
+      document.querySelector('.lorem').addEventListener('scroll', function () {
+        var scrollamount = document.querySelector('.lorem').scrollTop;
+        var realboxsize = document.querySelector('.lorem').scrollHeight;
+        var boxheight = document.querySelector('.lorem').clientHeight;
+        console.log(scrollamount)
+        // var boxsize = parseInt( document.querySelector('.lorem').style.height)
+        if(scrollamount+boxheight> realboxsize-10 && 약관확인==0){
+          alert('약관을 다 읽었습니다');
+          약관확인 += 1;
+        }
+      })
+
+      //스크롤 이벤트 window나 document 상관없지만 관습적으로 window를 쓴다.
+      window.addEventListener('scroll', function(){
+        var htmlscroll = document.querySelector('html').scrollTop;
+        document.getElementById('pagerate').style.width= htmlscroll*100/1900+'%';
+        
+
+        if(window.scrollY>300){
+          document.querySelector('.navbar-brand').style.fontSize = '20px';
+        }else{
+          document.querySelector('.navbar-brand').style.fontSize = '30px';
+        }
+      });
+
+
+      var slide = document.getElementsByClassName('slide-box')
+      var nextpre_count = 0;  //
+      
+      //캐러셀 기능   변수 선언을 var로 했을 때는 마지막에 i가 4가 되기 때문에 화면에 아무 것도 안나옴
+      for(let i=1; i<slide.length+1; i++){
+        document.querySelector('.slide-'+i).addEventListener('click', function(){
+          document.querySelector('.slide-container').style.transform = 'translateX('+(i-1)*(-100)+'vw)';
+          nextpre_count = i-1
+        })
+      }
+      
+      //캐러셀 이전(pre) 다음(next) 버튼
+      document.querySelector('#next').addEventListener('click', function(){
+        if(nextpre_count<slide.length-1){
+          nextpre_count++
+        }
+        document.querySelector('.slide-container').style.transform = 'translateX('+nextpre_count*(-100)+'vw)';
+      })
+
+      document.querySelector('#pre').addEventListener('click', function(){
+        if(nextpre_count>0){
+          nextpre_count--
+        }
+        document.querySelector('.slide-container').style.transform = 'translateX('+nextpre_count*(-100)+'vw)';
+      })
+
+
+      
+      //setTimeOut() 기능
+      for(let i=5; i>0; i--){
+        (function(x){
+          setTimeout(function(){
+            document.getElementsByClassName('alert')[0].innerHTML = i+'초 이내 구매시 사은품 증정';
+            console.log(i)
+          }, (6-i) * 1000)
+        })(i)
+      }
+        setTimeout(function(){
+          document.getElementsByClassName('alert')[0].style.display = 'none';
+        }, 6000)
+      
+
+      
+      // 다크모드 기능
+      var counter = 0;
+
+      document.getElementById('darkmode').addEventListener('click', function(){
+          counter++
+          //짝수일때 light 홀수일때 dark
+          if(counter%2 == 0){
+          document.getElementById('darkmode').innerHTML = 'Light 🔄';
+          }else{
+          document.getElementById('darkmode').innerHTML = 'Dark 🔄';
+          }
+      })
+
+
+
+      // 아이디 비밀번호 체크
+      // document.getElementsByTagName('form')[0].addEventListener('submit', function (e) {
+      //     if(document.getElementById('uid').value == ''){
+      //       alert('아이디 쓰세요');
+      //       e.preventDefault();
+      //     }
+
+      //     var 유저비번 = document.getElementById('pw').value
+      //     if(유저비번 == ''){
+      //       alert('비밀번호를 쓰세요');
+      //       e.preventDefault();
+      //     } else if(유저비번.length < 6){
+      //       alert('6자 미만입니다');
+      //       e.preventDefault();
+      //     }else if(/[A-Z]/.test(유저비번) != true){
+      //       alert('비번에 영어 대문자 한개 이상있어야 함');
+      //       e.preventDefault();
+      //     }
+
+      //     // 아이디가 이메일 형식인지 확인하는 '정규식'
+      //     var 유저아이디 = document.getElementById('uid').value;
+      //     if(/\S+@\S+\.\S+/.test(유저아이디) == false){
+      //       alert('아이디가 이메일 형식이 아닙니다');
+      //       e.preventDefault();
+      //     }
+      // })
+
+
+      // document.querySelector('#login').addEventListener('click' , function () {
+      //   document.querySelector('.black-bg').classList.add('show-modal')
+        
+      // })
+
+
+      // document.querySelector('#close').addEventListener('click' , function () {
+      //   document.querySelector('.black-bg').classList.remove('show-modal')
+        
+      // })
+
+
+
+      //서브바 ui
+      document.getElementById('open').addEventListener('click', function () {
+        // document.getElementById('ul').style.display = 'block';
+        document.getElementsByClassName('list-group')[0].classList.toggle('show')
+      })
+
+     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>

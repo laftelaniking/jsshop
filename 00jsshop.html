@@ -30,7 +30,7 @@
 
     <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
-        <span class="navbar-brand">Navbar</span>
+        <span class="navbar-brand">jsshop</span>
 
         <span class="badge bg-dark" id="darkmode" style="cursor: default;"> Dark 🔄</span>
 
@@ -38,26 +38,30 @@
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
+      <ul class="list-group " id="ul">
+        <li class="list-group-item">An item</li>
+        <li class="list-group-item">A second item</li>
+        <li class="list-group-item">A third item</li>
+        <li class="list-group-item">A fourth item</li>
+        <li class="list-group-item">And a fifth one</li>
+      </ul>
+    <div id="pagerate" style="background-color: red; width: 0%; height: 3px;"></div>
     </nav> 
     
-    <ul class="list-group " id="ul">
-      <li class="list-group-item">An item</li>
-      <li class="list-group-item">A second item</li>
-      <li class="list-group-item">A third item</li>
-      <li class="list-group-item">A fourth item</li>
-      <li class="list-group-item">And a fifth one</li>
-    </ul>
+    <div style="height: 100px;"></div>
 
-
+    
     <div class="main-bg">
       <h4>Shirts on Sale</h4>
       <button id="login" class="btn btn-danger">로그인</button>
     </div>
 
+    <!-- 이거 궁금하면 댓글로 물어보셈 찾아보시던가 -->
     <div class="alert alert-danger">
       5초 이내 구매시 사은품 증정
     </div>
     
+    <!-- Here is 캐러셀 -->
     <div class="slide-container">
       <div class="slide-box">
         <img src="car1.png">
@@ -70,43 +74,67 @@
       </div>
     </div>
 
-    
+    <!-- 캐러셀 버튼 -->
     <button id="pre">pre</button>
     <button class="slide-1">1</button>
     <button class="slide-2">2</button>
     <button class="slide-3">3</button>
     <button id="next">next</button>
+   
+ 
+    <div style="height: 1000px;"></div>
+
+
+
+
+
+
 
     <script>
+     
+      
+
+      //스크롤 이벤트 window나 document 상관없지만 관습적으로 window를 쓴다.
+      window.addEventListener('scroll', function(){
+        var htmlscroll = document.querySelector('html').scrollTop;
+        var presentsize = document.querySelector('html').clientHeight;
+        var realsize = document.querySelector('html').scrollHeight;
+        document.getElementById('pagerate').style.width= htmlscroll*100/(realsize-presentsize)+'%';
+
+        
+
+        if(window.scrollY>300){
+          document.querySelector('.navbar-brand').style.fontSize = '20px';
+        }else{
+          document.querySelector('.navbar-brand').style.fontSize = '30px';
+        }
+      });
+
 
       var slide = document.getElementsByClassName('slide-box')
+      var nextpre_count = 0;  //
       
       //캐러셀 기능   변수 선언을 var로 했을 때는 마지막에 i가 4가 되기 때문에 화면에 아무 것도 안나옴
       for(let i=1; i<slide.length+1; i++){
         document.querySelector('.slide-'+i).addEventListener('click', function(){
           document.querySelector('.slide-container').style.transform = 'translateX('+(i-1)*(-100)+'vw)';
+          nextpre_count = i-1
         })
       }
       
       //캐러셀 이전(pre) 다음(next) 버튼
-      var next_count = 0;
-
-      //다음(next)
       document.querySelector('#next').addEventListener('click', function(){
-        if(next_count<slide.length-1){
-          next_count++
+        if(nextpre_count<slide.length-1){
+          nextpre_count++
         }
-        // console.log(next_count)
-        document.querySelector('.slide-container').style.transform = 'translateX('+next_count*(-100)+'vw)';
+        document.querySelector('.slide-container').style.transform = 'translateX('+nextpre_count*(-100)+'vw)';
       })
 
-      //이전(pre)
       document.querySelector('#pre').addEventListener('click', function(){
-        if(next_count>0){
-          next_count--
+        if(nextpre_count>0){
+          nextpre_count--
         }
-        // console.log(next_count)
-        document.querySelector('.slide-container').style.transform = 'translateX('+next_count*(-100)+'vw)';
+        document.querySelector('.slide-container').style.transform = 'translateX('+nextpre_count*(-100)+'vw)';
       })
 
 
@@ -142,43 +170,43 @@
 
 
       // 아이디 비밀번호 체크
-      document.getElementsByTagName('form')[0].addEventListener('submit', function (e) {
-          if(document.getElementById('uid').value == ''){
-            alert('아이디 쓰세요');
-            e.preventDefault();
-          }
+      // document.getElementsByTagName('form')[0].addEventListener('submit', function (e) {
+      //     if(document.getElementById('uid').value == ''){
+      //       alert('아이디 쓰세요');
+      //       e.preventDefault();
+      //     }
 
-          var 유저비번 = document.getElementById('pw').value
-          if(유저비번 == ''){
-            alert('비밀번호를 쓰세요');
-            e.preventDefault();
-          } else if(유저비번.length < 6){
-            alert('6자 미만입니다');
-            e.preventDefault();
-          }else if(/[A-Z]/.test(유저비번) != true){
-            alert('비번에 영어 대문자 한개 이상있어야 함');
-            e.preventDefault();
-          }
+      //     var 유저비번 = document.getElementById('pw').value
+      //     if(유저비번 == ''){
+      //       alert('비밀번호를 쓰세요');
+      //       e.preventDefault();
+      //     } else if(유저비번.length < 6){
+      //       alert('6자 미만입니다');
+      //       e.preventDefault();
+      //     }else if(/[A-Z]/.test(유저비번) != true){
+      //       alert('비번에 영어 대문자 한개 이상있어야 함');
+      //       e.preventDefault();
+      //     }
 
-          // 아이디가 이메일 형식인지 확인하는 '정규식'
-          var 유저아이디 = document.getElementById('uid').value;
-          if(/\S+@\S+\.\S+/.test(유저아이디) == false){
-            alert('아이디가 이메일 형식이 아닙니다');
-            e.preventDefault();
-          }
-      })
+      //     // 아이디가 이메일 형식인지 확인하는 '정규식'
+      //     var 유저아이디 = document.getElementById('uid').value;
+      //     if(/\S+@\S+\.\S+/.test(유저아이디) == false){
+      //       alert('아이디가 이메일 형식이 아닙니다');
+      //       e.preventDefault();
+      //     }
+      // })
 
 
-      document.querySelector('#login').addEventListener('click' , function () {
-        document.querySelector('.black-bg').classList.add('show-modal')
+      // document.querySelector('#login').addEventListener('click' , function () {
+      //   document.querySelector('.black-bg').classList.add('show-modal')
         
-      })
+      // })
 
 
-      document.querySelector('#close').addEventListener('click' , function () {
-        document.querySelector('.black-bg').classList.remove('show-modal')
+      // document.querySelector('#close').addEventListener('click' , function () {
+      //   document.querySelector('.black-bg').classList.remove('show-modal')
         
-      })
+      // })
 
 
 

@@ -115,8 +115,9 @@
       //스크롤 이벤트 window나 document 상관없지만 관습적으로 window를 쓴다.
       window.addEventListener('scroll', function(){
         var htmlscroll = document.querySelector('html').scrollTop;
-        document.getElementById('pagerate').style.width= htmlscroll*100/1900+'%';
-        
+        var presentsize = document.querySelector('html').clientHeight;
+        var realsize = document.querySelector('html').scrollHeight;
+        document.getElementById('pagerate').style.width= htmlscroll*100/(realsize-presentsize)+'%';
 
         if(window.scrollY>300){
           document.querySelector('.navbar-brand').style.fontSize = '20px';

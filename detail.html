@@ -43,6 +43,9 @@
         .show {
           display: block;
         }
+        .unshow {
+          display: none;
+        }
       </style>
 </head>
 <body>
@@ -52,7 +55,46 @@
           <span id="price">가격</span>
         </div>
       </div> 
+      
+      <!-- 셀렉트 ui -->
+      <form class="container my-5 form-group">
+        <p>상품선택</p>
+        <select class="form-select mt-2">
+          <option>---</option>
+          <option>모자</option>
+          <option>셔츠</option>
+        </select>
+        <select class="form-select mt-2 unshow">
+          <option>95</option>
+          <option>100</option>
+          <option>105</option>
+        </select>
+      </form>
 
+      <script>
+        //change는 상태가 바꼈을 때 적용된다 강의에서도 input,change이벤트에 대해 얘기했다
+        //비슷한 셀렉터들이 많을 때는 변수화 해주는게 성능에 좋다
+        var formSelect = document.querySelectorAll('.form-select')
+        formSelect[0].addEventListener('change', function(e){
+          formSelect[1].classList.remove('unshow');
+         
+          if (this.value == '---'){
+            //다시 안보이게
+            formSelect[1].classList.add('unshow');
+          }
+          })
+        
+      </script>
+      
+
+
+
+
+
+
+
+
+      <!-- 탭 ui -->
       <div class="container mt-5">
         <ul class="list">
           <li class="tab-button orange" data-id="0">Products</li>
@@ -69,6 +111,19 @@
           <p>배송정보입니다. Shipping</p>
         </div>
       </div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script>
       //array 자료형 엑셀처럼 여러 자료를 한 장소에 저장하고 싶을 때 사용
